@@ -20,7 +20,7 @@ contract IPFSUploader is usingProvable  {
     constructor () public payable  {
         owner = msg.sender;
         
-        provableComputationHash = "QmRGYcLzFhLqBaVVBcMdQmF25XCSCA7i6KgfiWtp5Mfn9Y";
+        provableComputationHash = "json(QmRGYcLzFhLqBaVVBcMdQmF25XCSCA7i6KgfiWtp5Mfn9Y).Hash";
         
         provable_setCustomGasPrice(4000000000);
         provable_setProof(proofType_TLSNotary | proofStorage_IPFS);
