@@ -20,6 +20,8 @@ contract IPFSUploader is usingProvable  {
     constructor () public payable  {
         owner = msg.sender;
         
+        provableComputationHash = "QmRGYcLzFhLqBaVVBcMdQmF25XCSCA7i6KgfiWtp5Mfn9Y";
+        
         provable_setCustomGasPrice(4000000000);
         provable_setProof(proofType_TLSNotary | proofStorage_IPFS);
         emit LogConstructorInitiated("Constructor was initiated. Call 'uploadToIPFS(text)' to send the Provable Query.");
@@ -38,13 +40,13 @@ contract IPFSUploader is usingProvable  {
         delete validIds[_myid];
     }
 
-    function uploadToIPFS(string memory _text) public payable {
-        if (provable_getPrice("URL") > address(this).balance) {
+    function uploadToIPFS(string memory _text, string memory _filename) public payable {
+        if (provable_getPrice("computation") > address(this).balance) {
           emit LogNewProvableQuery("Provable query was NOT sent, please add some ETH to cover for the query fee");
         } else {
           emit LogNewProvableQuery("Provable query was sent, standing by for the answer..");
           bytes32 queryId =
-            provable_query("computation", ["QmSJ7RL8JFy6p2br5874SQBMe9qZiDZHayC9N6bx4GzMem", _text, ""]);
+            provable_query("computation", [provableComputationHash, _text, _filename]);
           validIds[queryId] = true;
         }
     }
